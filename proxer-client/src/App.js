@@ -5,50 +5,67 @@ const fetchMonitoringData = () => fetch('http://localhost/monitoring').then(res 
 
 class App extends Component {
 
-  constructor(props) {
+    constructor(props) {
 
-    super(props);
+        super(props);
 
-    this.state = {
-      monitoringData: { requests: [] }
+        this.state = {
+            monitoringData: {requests: []}
+        }
+
+
     }
 
+    async componentWillMount() {
 
-  }
+        let monitoringData = await fetchMonitoringData();
 
-  async componentWillMount() {
+        this.setState({monitoringData})
 
-    let monitoringData = await fetchMonitoringData();
+    }
 
-    this.setState({monitoringData})
+    render() {
+        return (
+            <div className="App">
 
-  }
+                <h1>Proxer</h1>
+                <div>Total Request Count {this.state.monitoringData.requestCount}</div>
+                <div>Error Rate {this.state.monitoringData.errorAverage * 100}%</div>
+                <h2>Requests</h2>
 
-  render() {
-    return (
-        <div className="App">
+                <div className='RequestData-Container'>
+                    {
+                        this.state.monitoringData.requests.map((data, i) => {
 
-          <h1>Proxer</h1>
-          <div>Total Request Count {this.state.monitoringData.requestCount}</div>
-          <div>Error Rate {this.state.monitoringData.errorAverage * 100}%</div>
-          <h2>Requests</h2>
+                            return <div className='RequestData'>
+                                <h3>Request #{i + 1}</h3>
+                                <span><b>URL:</b></span><span className='RequestData-URL'>{data.url}</span>
+                                <br/>
+                                <br/>
+                                <span><h3>Responses:</h3></span>
+                                <div className='RequestData-Responses'>
+                                    
+                                    {
+                                        data.responses.map(responseObj => {
 
-          <div className='RequestData-Container'>
-          {
-            this.state.monitoringData.requests.map(data => {
+                                            return <div>
+                                                <h4>{Object.keys(responseObj)}</h4>
+                                                <div>{JSON.stringify(responseObj[Object.keys(responseObj)], null, 3)}</div>
+                                            </div>
 
-              return <span className='RequestData'>
-                <div className='RequestData-URL'>{data.url}</div>
-                <div className='RequestData-Responses'>{JSON.stringify(data.responses)}</div>
-              </span>
+                                        })
+                                    }
+                
+                                </div>
+                            </div>
 
-            })
-          }
-          </div>
+                        })
+                    }
+                </div>
 
-        </div>
-    );
-  }
+            </div>
+        );
+    }
 }
 
 export default App;

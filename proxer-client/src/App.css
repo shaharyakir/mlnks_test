@@ -1,33 +1,30 @@
 .App {
 
   box-sizing: border-box;
+  padding: 30px;
 
 }
 
 .RequestData-Container {
 
-  width: 900px;
-  overflow: hidden;
-
 }
 
 .RequestData {
 
-  display: flex;
   align-items: center;
   border: 1px solid;
-  flex-wrap: wrap;
+  width: 80%;
+  padding: 20px;
 
 }
 
 .RequestData-URL {
 
-  flex: 1 1 160px;
+  word-break: break-all;
 
 }
 
 .RequestData-Responses {
 
-  flex: 1 1 160px;
 
 }

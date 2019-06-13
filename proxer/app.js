@@ -53,7 +53,7 @@ app.get('/fetch/:urls', (req, res, next) => {
 
                     if (errorStrategy === errorStrategies.replace) {
 
-                        return {url: 'failed'};
+                        return {[url]: 'failed'};
 
                     } else {
 
