@@ -1,0 +1,11 @@
+node_modules
+/public
+.idea
+*.jpg
+*.png
+*.gif
+*.jpeg
+*.mp4
+*.log
+*.orig
+secrets
