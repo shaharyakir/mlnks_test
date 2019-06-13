@@ -63,12 +63,15 @@ Run requests (for monitoring data to get filled) - /proxer/runRequests.js
 - Can cache endpoints responses (if they define themselves as cacheable) to a persistent store and use them until the cache has gone stale
 
 ## Time Division
-- Design - 40 minutes
+- Tech Spec Design (most of this readme) + Questions preparation - 40 minutes
 - Server
   - Set up env. - 10 minutes
   - Tests - 45 minutes
   - /fetch - 45 minutes
   - /monitoring - 10 minutes
 - Client
-  - 
+  - Set up - 5 minutes
+  - Deciding on UI presentation - 15 minutes
+  - Coding - 20 minutes 
 - End-To-End Testing
+	- API refactoring + fixes - 15 minutes
