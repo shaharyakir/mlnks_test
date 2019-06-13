@@ -11,8 +11,6 @@ const state = {
     requests: []
 };
 
-// http://proxer.com/fetch/<base64>?errors=[fail_any]
-
 let errorStrategies = {failAny: 'fail_any', replace: 'replace'};
 
 const parseUrls = urls => {
@@ -21,13 +19,15 @@ const parseUrls = urls => {
 
     try {
         return (JSON.parse(urlsBs64Decoded));
+
     } catch (e) {
+
         return null;
+
     }
 
 };
 
-// TODO extract funcs
 app.get('/fetch/:urls', (req, res, next) => {
 
     let errorStrategy = req.query.errors.match(/\[(.*)\]/)[1];
@@ -72,7 +72,7 @@ app.get('/fetch/:urls', (req, res, next) => {
         })
         .catch((err) => {
 
-            state.requests.push({url: req.url, responses: [{result: 'All responses failed'}]});
+            state.requests.unshift({url: req.url, responses: [{result: 'All responses failed'}]});
 
             res.status(500).end()
 
