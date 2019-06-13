@@ -65,7 +65,7 @@ app.get('/fetch/:urls', (req, res, next) => {
     )
         .then((responses) => {
 
-            state.requests.push({url: req.url, responses: responses});
+            state.requests.unshift({url: req.url, responses: responses});
 
             res.json(responses);
 

@@ -29,8 +29,8 @@ class App extends Component {
             <div className="App">
 
                 <h1>Proxer</h1>
-                <div>Total Request Count {this.state.monitoringData.requestCount}</div>
-                <div>Error Rate {this.state.monitoringData.errorAverage * 100}%</div>
+                <div>Total Request Count: {this.state.monitoringData.requestCount}</div>
+                <div>Error Rate: {(this.state.monitoringData.errorAverage * 100).toFixed(2)}%</div>
                 <h2>Requests</h2>
 
                 <div className='RequestData-Container'>
