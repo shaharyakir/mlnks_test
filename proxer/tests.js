@@ -11,8 +11,6 @@ describe('/fetch', () => {
             .get('/fetch/dddd==?errors=[fail_any]')
             .expect(500, done)
 
-        // .expect(200, done);
-
     });
 
     it('should return 404 on missing urls param', function (done) {
@@ -20,7 +18,6 @@ describe('/fetch', () => {
         supertest
             .get('/fetch')
             .expect(404, done)
-
 
     });
 
