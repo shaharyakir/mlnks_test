@@ -3,10 +3,12 @@ const app = express();
 const port = 80;
 const axios = require('axios');
 
+app.use(require('cors')());
+
 const state = {
     requestCount: 0,
     errorCount: 0,
-    responses: []
+    requests: []
 };
 
 // http://proxer.com/fetch/<base64>?errors=[fail_any]
@@ -39,36 +41,44 @@ app.get('/fetch/:urls', (req, res, next) => {
 
     state.requestCount++;
 
+    let isFoundError = false;
+
     Promise.all(
         urls.map(url =>
             axios.get(url)
                 .then(resp => ({[resp.config.url]: resp.data.data}))
                 .catch((err) => {
 
+                    isFoundError = true;
+
                     if (errorStrategy === errorStrategies.replace) {
 
-                        state.errorCount++;
-
                         return {url: 'failed'};
+
                     } else {
+
                         throw err;
+
                     }
                 }))
 
     )
         .then((responses) => {
 
-            state.responses.push({url: req.url, responses: responses});
+            state.requests.push({url: req.url, responses: responses});
 
             res.json(responses);
 
         })
         .catch((err) => {
 
-            state.errorCount++;
-            state.responses.push({url: req.url, responses: [{result: 'All responses failed'}]});
+            state.requests.push({url: req.url, responses: [{result: 'All responses failed'}]});
 
             res.status(500).end()
+
+        }).finally(() => {
+
+            if (isFoundError) { state.errorCount++; }
 
         });
 
@@ -76,7 +86,11 @@ app.get('/fetch/:urls', (req, res, next) => {
 
 app.get('/monitoring', (req, res, next) => {
 
-    res.json(state);
+    res.json({
+        requestCount: state.requestCount,
+        errorAverage: state.errorCount / state.requestCount,
+        requests: state.requests.slice(0, 10)
+    });
 
 });
 

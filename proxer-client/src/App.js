@@ -1,26 +1,54 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const fetchMonitoringData = () => fetch('http://localhost/monitoring').then(res => res.json());
+
+class App extends Component {
+
+  constructor(props) {
+
+    super(props);
+
+    this.state = {
+      monitoringData: { requests: [] }
+    }
+
+
+  }
+
+  async componentWillMount() {
+
+    let monitoringData = await fetchMonitoringData();
+
+    this.setState({monitoringData})
+
+  }
+
+  render() {
+    return (
+        <div className="App">
+
+          <h1>Proxer</h1>
+          <div>Total Request Count {this.state.monitoringData.requestCount}</div>
+          <div>Error Rate {this.state.monitoringData.errorAverage * 100}%</div>
+          <h2>Requests</h2>
+
+          <div className='RequestData-Container'>
+          {
+            this.state.monitoringData.requests.map(data => {
+
+              return <span className='RequestData'>
+                <div className='RequestData-URL'>{data.url}</div>
+                <div className='RequestData-Responses'>{JSON.stringify(data.responses)}</div>
+              </span>
+
+            })
+          }
+          </div>
+
+        </div>
+    );
+  }
 }
 
 export default App;
